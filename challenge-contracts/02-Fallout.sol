@@ -41,4 +41,4 @@ contract Fallout {
   function allocatorBalance(address allocator) public view returns (uint) {
     return allocations[allocator];
   }
-}Ì
+}
